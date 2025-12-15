@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/electrickazoo/Assignments/chess-ai-engine/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
