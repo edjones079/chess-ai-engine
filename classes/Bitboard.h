@@ -6,6 +6,16 @@
 
 #include <iostream>
 
+/* 
+    A Bitboard is a 64-bit integer where each bit 
+    represents one square on the chess board.
+
+    Bit = 1 --> Square has a piece or is a valid move.
+    Bit = 0 --> Square is empty or invalid.
+
+    Defined as "uint64_t bitboard"
+*/
+
 enum ChessPiece
 {
     NoPiece,
@@ -17,12 +27,13 @@ enum ChessPiece
     King
 };
 
-class BitboardElement {
+
+class BitBoard {
     public:
     // Constructors
-    BitboardElement()
+    BitBoard()
         : _data(0) { }
-    BitboardElement(uint64_t data)
+    BitBoard(uint64_t data)
         : _data(data) { }
 
     // Getters and Setters
@@ -32,6 +43,7 @@ class BitboardElement {
     // Method to loop through each bit in the element and perform an operation on it.
     template <typename Func>
     void forEachBit(Func func) const {
+        // Is bitboard not empty
         if (_data != 0) {
             uint64_t tempData = _data;
             while (tempData) {
@@ -42,12 +54,22 @@ class BitboardElement {
         }
     }
 
-    BitboardElement& operator|=(const uint64_t other) {
+    BitBoard& operator|=(const uint64_t other) {
         _data |= other;
         return *this;
     }
 
-    void printBitboard() {
+    BitBoard& operator<<=(const uint64_t other) {
+        _data <<= other;
+        return *this;
+    }
+
+    BitBoard& operator>>=(const uint64_t other) {
+        _data >>= other;
+        return *this;
+    }
+
+    void printBitBoard() {
         std::cout << "\n  a b c d e f g h\n";
         for (int rank = 7; rank >= 0; rank--) {
             std::cout << (rank + 1) << " ";
@@ -82,14 +104,14 @@ private:
 };
 
 struct BitMove {
-    int from; // Start square
-    int to; // Target square
-    int piece;
+    uint8_t from; // Start square
+    uint8_t to; // Target square
+    uint8_t piece;
     
-    BitMove(int from, int to, int piece)
+    BitMove(uint8_t from, uint8_t to, uint8_t piece)
         : from(from), to(to), piece(piece) { }
         
-    BitMove() : from(0), to(0), piece(NoPiece) { }
+    BitMove() : from(0), to(0), piece(0) { }
     
     bool operator==(const BitMove& other) const {
         return from == other.from && 
